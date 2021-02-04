@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:session/dbHelper.dart';
-import 'package:session/login.dart';
-import 'package:session/model.dart';
-import 'package:session/screen.dart';
+import 'package:session/db/dbHelper.dart';
+import 'package:session/view/login.dart';
+import 'package:session/model/model.dart';
+import 'package:session/view/screen.dart';
 
 class Home extends StatefulWidget {
   final User user;
 
   Home(this.user);
-
   @override
   _HomeState createState() => _HomeState(this.user);
 }
@@ -126,6 +125,11 @@ class _HomeState extends State<Home> {
                                 user == null) {
                               user =
                                   User(_name.text, _email.text, _password.text);
+                              print("NAMA: ${_name.text}");
+                              print("EMAIL : ${_email.text}");
+                              print("PASSWORD : ${_password.text}");
+                              userHelper.getUser(
+                                  _name.text, _email.text, _password.text);
                               userHelper.insertUser(user);
                               _fromKey.currentState.save();
                               updateListView();
@@ -142,6 +146,7 @@ class _HomeState extends State<Home> {
                                 ),
                               ));
                             } else {
+                              print("Error");
                               return Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("Register Gagal"),
                                 behavior: SnackBarBehavior.floating,
@@ -158,10 +163,7 @@ class _HomeState extends State<Home> {
                           child: Text("Register"))),
                   FlatButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginForm()));
+                        Navigator.pushReplacementNamed(context, '/login');
                       },
                       child: Text("Go To Login Form"))
                 ],

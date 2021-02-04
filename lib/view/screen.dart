@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:session/data.dart';
-import 'package:session/profile.dart';
+import 'package:session/view/data.dart';
+import 'package:session/view/home.dart';
+import 'package:session/view/profile.dart';
 
 class Screen extends StatefulWidget {
   @override
@@ -10,8 +11,9 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> {
   int _currentInd = 0;
   final List<Widget> _children = [
-    DataScreen(),
+    HomeScreen(),
     Profile(),
+    DataScreen()
   ];
   _onTapTab(int index){
     setState(() {
@@ -22,17 +24,19 @@ class _ScreenState extends State<Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ,
+        title: Text("Application"),
       ),
       body: _children[_currentInd],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _onTapTab,
         currentIndex: 0,
         items: [
-          BottomNavigationBarItem(title: Text("Data"), icon: Icon(Icons.people)),
-          BottomNavigationBarItem(title: Text("Profile"), icon: Icon(Icons.person))
+          BottomNavigationBarItem(title: Text("Home"), icon: Icon(Icons.home)),
+          BottomNavigationBarItem(title: Text("Profile"), icon: Icon(Icons.person, color: Colors.blue,)),
+          BottomNavigationBarItem(title: Text("Data"),icon: Icon(Icons.people))
         ],
       ),
     );
   }
 }
+

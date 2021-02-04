@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
-import 'package:session/dbHelper.dart';
-import 'package:session/model.dart';
+import 'package:session/db/dbHelper.dart';
+import 'package:session/model/model.dart';
 import 'package:sqflite/sqflite.dart';
 
 const String secret = "secred";
@@ -13,7 +13,7 @@ class LoginResponse {
   User user;
   DbHelper dbHelper = DbHelper();
 
-  Future<bool> checkAuth(String email, String password) async {
+  Future<bool> checkAuth(String email, password) async {
     // jika email dan password salah
     //   maka tampilkan error message
     // jika berhasil generate JWT token untuk authentikasi
@@ -23,15 +23,13 @@ class LoginResponse {
     Database db = await dbHelper.initDb();
     var validateUser = await db.query("users",
         where: "email=? AND password=?", whereArgs: [email, password]);
-    if(validateUser.length > 0){
+    if (validateUser.length > 0) {
       final jwt = senderCreatesJwt(email, password);
-      receiverProcessesJwt(jwt, email, password);
+      receiverProcessesJwt(jwt,email, password);
       return true;
     } else {
       return false;
     }
-
-
   }
 
   String senderCreatesJwt(String email, String password) {
@@ -59,7 +57,7 @@ class LoginResponse {
   String _randomString(int length) {
     const chars =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    final rnd = new Random(new DateTime.now().millisecondsSinceEpoch);
+    final rnd = new Random(new DateTime.now().minute);
     final buf = new StringBuffer();
 
     for (var x = 0; x < length; x++) {
@@ -111,7 +109,6 @@ class LoginResponse {
 // jika berhasil generate JWT token untuk authentikasi
 //   token tersebut di simpan ke kolom token user tersebut untuk di gunakan
 //   tampilkan sukses message
-
 
 // HEADER Authorization: Bearer ${jwtToken}
 

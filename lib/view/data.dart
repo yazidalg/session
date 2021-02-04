@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:session/dbHelper.dart';
-import 'package:session/home.dart';
-import 'package:session/login.dart';
-import 'package:session/model.dart';
-import 'package:session/screen.dart';
+import 'package:session/db/dbHelper.dart';
+import 'package:session/view/register.dart';
+import 'package:session/view/login.dart';
+import 'package:session/model/model.dart';
+import 'package:session/view/screen.dart';
 
 class DataScreen extends StatefulWidget {
   @override
@@ -52,8 +52,7 @@ class _DataScreenState extends State<DataScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LoginForm()));
+          Navigator.pushReplacementNamed(context, "/login");
         },
         elevation: 6,
         child: Icon(Icons.arrow_forward_outlined),
@@ -68,7 +67,7 @@ class _DataScreenState extends State<DataScreen> {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.red,
-          child: Icon(Icons.people),
+          child: Icon(Icons.text_format),
         ),
         title: Text(
           user.name,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:session/home.dart';
-import 'package:session/login_response.dart';
-import 'package:session/model.dart';
-import 'package:session/screen.dart';
+import 'package:session/db/dbHelper.dart';
+import 'package:session/service/auth_service.dart';
+import 'package:session/view/register.dart';
+import 'package:session/response/login_response.dart';
+import 'package:session/model/model.dart';
+import 'package:session/view/screen.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -15,10 +17,14 @@ class _LoginFormState extends State<LoginForm> {
 
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+  TextEditingController _name = TextEditingController();
+
+  AuthService appAuth = AuthService();
 
   LoginResponse loginRes = LoginResponse();
   User user;
-  String token;
+  Home home;
+  DbHelper userHelper = DbHelper();
 
   String _validateEmail(String value) {
     if (value.isEmpty) {
@@ -74,6 +80,8 @@ class _LoginFormState extends State<LoginForm> {
                             var password = _password.text;
                             if (_formKey.currentState.validate() &&
                                 await loginRes.checkAuth(email, password)) {
+                              print(await loginRes.checkAuth(email, password));
+                              Navigator.pushReplacementNamed(context, '/home');
                               return Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("Berhasil Login"),
                                 backgroundColor: Color(0xFF00af91),
@@ -85,6 +93,7 @@ class _LoginFormState extends State<LoginForm> {
                                 ),
                               ));
                             } else {
+                              print("Error");
                               return Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text(
                                   "Login Gagal",
@@ -102,10 +111,7 @@ class _LoginFormState extends State<LoginForm> {
                           child: Text("Login"))),
                   FlatButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Home(user)));
+                        Navigator.pushReplacementNamed(context, '/register');
                       },
                       child: Text("Go To Register"))
                 ],
