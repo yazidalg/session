@@ -60,4 +60,3 @@ class User {
     return map;
   }
 }
-

@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:session/model.dart';
+import 'package:flutter/material.dart';
+import 'package:session/model/model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -58,16 +59,34 @@ class DbHelper {
     var userMapList = await select();
     int result = userMapList.length;
     List<User> userList = List<User>();
-    for(int i = 0; i<result; i++){
+    for (int i = 0; i < result; i++) {
       userList.add(User.fromMap(userMapList[i]));
     }
     return userList;
   }
 
-  Future<List<Map<String, dynamic>>> select() async{
+  Future<List<Map<String, dynamic>>> select() async {
     Database db = await this.database;
     var mapList = await db.query('users', orderBy: 'name');
     return mapList;
   }
 
+  Future<User> getUser(String name, String email, String password) async {
+    Database db = await this.database;
+    var mUser = await db.query('users',
+        where: 'name=? AND email=? AND password=?',
+        whereArgs: [name, email, password]);
+    try {
+      if (mUser.length == 0) {
+        name.toString();
+        email.toString();
+        password.toString();
+        return User.fromMap(mUser.first);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
 }
