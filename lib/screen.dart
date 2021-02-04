@@ -22,7 +22,6 @@ class _ScreenState extends State<Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ,
       ),
       body: _children[_currentInd],
       bottomNavigationBar: BottomNavigationBar(
